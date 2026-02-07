@@ -7,8 +7,10 @@ export interface BingWallpaper {
 
 export async function getBingWallpaper(): Promise<BingWallpaper | null> {
   try {
-    // 使用cn.bing.com的API端点，可能会有不同的CORS设置
-    const response = await fetch('https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN')
+    // 使用CORS代理服务来绕过CORS限制
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+    const targetUrl = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN'
+    const response = await fetch(proxyUrl + targetUrl)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
