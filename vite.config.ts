@@ -72,13 +72,6 @@ export default defineConfig({
   server: {
     host: true,
     port: 3000,
-    proxy: {
-      '/api/bing': {
-        target: 'https://www.bing.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/bing/, '/HPImageArchive.aspx')
-      }
-    }
   },
   build: {
     minify: 'terser',
