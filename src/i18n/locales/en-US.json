@@ -57,7 +57,13 @@
   },
   "generalSettings": {
     "layout": "Layout",
-    "clockOnlyMode": "Clock Only"
+    "clockOnlyMode": "Clock Only Mode",
+    "autoReturn": "Auto Return",
+    "autoReturnHome": "Auto Return Home",
+    "autoReturnHomeTime": "Auto Return Home Time",
+    "wallpaper": "Wallpaper",
+    "enableWallpaper": "Enable Wallpaper",
+    "wallpaperRefreshInterval": "Wallpaper Refresh Interval"
   },
   "clockSettings": {
     "color": "Clock Color",
