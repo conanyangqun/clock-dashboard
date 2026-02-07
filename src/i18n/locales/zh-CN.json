@@ -56,8 +56,14 @@
     "enUS": "English"
   },
   "generalSettings": {
-    "layout": "界面布局",
-    "clockOnlyMode": "仅显示时钟"
+    "layout": "布局",
+    "clockOnlyMode": "仅显示时钟",
+    "autoReturn": "自动返回",
+    "autoReturnHome": "自动返回首页",
+    "autoReturnHomeTime": "自动返回首页等待时间",
+    "wallpaper": "壁纸",
+    "enableWallpaper": "启用壁纸",
+    "wallpaperRefreshInterval": "壁纸获取间隔"
   },
   "clockSettings": {
     "color": "时钟颜色",

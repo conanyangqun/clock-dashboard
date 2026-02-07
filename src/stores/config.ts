@@ -45,6 +45,14 @@ export const useConfigStore = defineStore('config', () => {
   const layoutConfig = ref({
     /** 仅显示时钟 */
     clockOnlyMode: false,
+    /** 自动返回首页 */
+    autoReturnHome: true,
+    /** 自动返回首页等待时间（秒） */
+    autoReturnHomeTime: 30,
+    /** 启用壁纸 */
+    enableWallpaper: true,
+    /** 壁纸获取间隔（分钟） */
+    wallpaperRefreshInterval: 60,
   })
 
   return {

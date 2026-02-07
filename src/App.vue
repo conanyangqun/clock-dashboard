@@ -12,6 +12,7 @@ import { isIpadIOS15OrLower } from './utils/device'
 import CalendarView from './views/CalendarView.vue'
 import ClockWeatherView from './views/ClockWeatherView.vue'
 import SmartHomeView from './views/SmartHomeView.vue'
+import WallpaperView from './views/WallpaperView.vue'
 
 const configStore = useConfigStore()
 const { showDrawer, layoutConfig } = storeToRefs(configStore)
@@ -72,10 +73,11 @@ function handleTouchEnd(e: TouchEvent) {
       isSwiping.value = false
     }, 50)
 
-    if (diff > 0 && currentPage.value < 2)
+    if (diff > 0 && currentPage.value < 3) {
       goToPage(currentPage.value + 1)
-    else if (diff < 0 && currentPage.value > 0)
+    } else if (diff < 0 && currentPage.value > 0) {
       goToPage(currentPage.value - 1)
+    }
   }
 }
 
@@ -91,10 +93,11 @@ function handleMouseUp(e: MouseEvent) {
       isSwiping.value = false
     }, 50)
 
-    if (diff > 0 && currentPage.value < 2)
+    if (diff > 0 && currentPage.value < 3) {
       goToPage(currentPage.value + 1)
-    else if (diff < 0 && currentPage.value > 0)
+    } else if (diff < 0 && currentPage.value > 0) {
       goToPage(currentPage.value - 1)
+    }
   }
 }
 
@@ -105,23 +108,27 @@ function handleGlobalClick(e: MouseEvent) {
   }
 }
 
-/** 30 秒不操作自动返回首页 */
-const { idle } = useIdle(30 * 1000)
+/** 自动返回首页 */
+const idleTime = computed(() => layoutConfig.value.autoReturnHomeTime * 1000)
+const { idle } = useIdle(idleTime.value)
 watch(idle, (newIdle) => {
-  if (newIdle) {
+   if (newIdle && layoutConfig.value.autoReturnHome) {
     goToPage(1)
-  }
+   }
 })
 
 /** 键盘左右键切换页面 */
 const { left, right } = useMagicKeys()
-watchEffect(() => {
-  if (showDrawer.value) return
 
-  if (left.value && currentPage.value > 0) {
+// 使用watch而不是watchEffect，避免按住按键时连续触发
+watch(left, (newLeft) => {
+  if (newLeft && !showDrawer.value && currentPage.value > 0) {
     goToPage(currentPage.value - 1)
   }
-  if (right.value && currentPage.value < 2) {
+})
+
+watch(right, (newRight) => {
+  if (newRight && !showDrawer.value && currentPage.value < 3) {
     goToPage(currentPage.value + 1)
   }
 })
@@ -149,19 +156,22 @@ watch(language, (nextLocale) => {
     </template>
 
     <div
-      class="main-slider flex h-full transition-transform duration-700 cubic-bezier"
-      :style="{ transform: `translateX(-${currentPage * 100}vw)`, width: '300vw' }"
-    >
-      <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
-        <SmartHomeView v-if="currentPage === 0" />
-      </div>
-      <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
-        <ClockWeatherView />
-      </div>
-      <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
-        <CalendarView v-if="currentPage === 2" ref="calendarRef" />
-      </div>
+    class="main-slider flex h-full transition-transform duration-700 cubic-bezier"
+    :style="{ transform: `translateX(-${currentPage * 100}vw)`, width: '400vw' }"
+  >
+    <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
+      <SmartHomeView v-if="currentPage === 0" />
     </div>
+    <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
+      <ClockWeatherView v-if="currentPage === 1" />
+    </div>
+    <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
+      <CalendarView v-if="currentPage === 2" ref="calendarRef" />
+    </div>
+    <div class="slide-page w-screen h-screen flex items-center justify-center flex-shrink-0">
+      <WallpaperView v-if="currentPage === 3" />
+    </div>
+  </div>
 
     <SettingsDrawer />
 
